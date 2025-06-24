@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:provider_test/controller/theme_changer.dart';
-import 'package:provider_test/favourite_model.dart';
-import 'package:provider_test/favourite_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,28 +9,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build main');
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => FavouriteModel()),
-        ChangeNotifierProvider(create: (context) => ThemeChanger()),
-      ],
-      child: Builder(
-        builder: (context) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            themeMode: Provider.of<ThemeChanger>(context).mode,
-            darkTheme: ThemeData(
-              brightness: Brightness.dark,
-              colorSchemeSeed: Colors.blueAccent
-            ),
-            theme: ThemeData(
-                colorSchemeSeed: Colors.blueAccent
-            ),
-            home: const FavouriteScreen(),
-          );
-        }
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      home: Counter(),
+    );
+  }
+}
+
+class Counter extends StatelessWidget {
+  Counter({super.key});
+
+  final ValueNotifier<int> _counter = ValueNotifier<int>(0);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ValueListenableBuilder(
+          valueListenable: _counter,
+          builder: (context, value, child) {
+            return Text(
+              _counter.value.toString(),
+              style: TextStyle(fontSize: 50),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _counter.value++;
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
