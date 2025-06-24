@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_test/controller/theme_changer.dart';
 import 'package:provider_test/en_screen.dart';
 import 'package:provider_test/favourite_model.dart';
 
@@ -8,8 +9,27 @@ class FavouriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Scaffold(
-      appBar: AppBar(title: Text('Favourite')),
+      appBar: AppBar(
+        title: Text('Favourite'),
+        actions: [
+          Consumer<ThemeChanger>(
+            builder: (context, value, child) =>
+                Icon(value.values ? Icons.nightlight : Icons.light_mode),
+          ),
+          SizedBox(width: 12),
+          Consumer<ThemeChanger>(
+            builder: (context, value, child) => Switch(
+              value: value.values,
+              onChanged: (mode) {
+                value.change(mode);
+              },
+            ),
+          ),
+          SizedBox(width: 12),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
