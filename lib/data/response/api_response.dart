@@ -5,6 +5,11 @@ class ApiResponse<T> {
   T? data;
   Status? status;
 
+  @override
+  String toString() {
+    return 'Status: $status \nMessage: $message \nData: $data';
+  }
+
   ApiResponse(this.status, this.data, this.message);
 
   ApiResponse.loading() : status = Status.loading;
