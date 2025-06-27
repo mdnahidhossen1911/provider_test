@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider_test/utils/routes/routes_name.dart';
+import 'package:provider_test/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Text('login'),
             ElevatedButton(onPressed: () {
-              Navigator.pushNamed(context, RoutesName.home);
+              Utils.showFlushBar(context,'move home');
+              // Navigator.pushNamed(context, RoutesName.home);
             }, child: Text('move next')),
           ],
         ),
