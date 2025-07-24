@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:provider_test/res/component/round_button.dart';
 import 'package:provider_test/utils/utils.dart';
+
+import '../view_model/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -32,6 +35,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -42,7 +46,6 @@ class _LoginViewState extends State<LoginView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  // App Title
                   const Text(
                     'Welcome Back!',
                     textAlign: TextAlign.center,
@@ -59,8 +62,6 @@ class _LoginViewState extends State<LoginView> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 48),
-
-                  // Email Text Field
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -134,10 +135,9 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // Login Button
                   RoundButton(
                     title: 'Login',
+                    loading: authViewModel.isLoading,
                     onPress: () {
                       if (_emailController.text.isEmpty) {
                         Utils.showFlushBar(context, 'Please enter your email');
@@ -151,12 +151,15 @@ class _LoginViewState extends State<LoginView> {
                           context,
                           'Password must be at least 6 characters long',
                         );
+                      } else {
+                        authViewModel.login(context, {
+                          "email": "admin@mail.com",
+                          "password": "123456",
+                        });
                       }
                     },
                   ),
                   const SizedBox(height: 24),
-
-                  // Sign Up Navigation
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

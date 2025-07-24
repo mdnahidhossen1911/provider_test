@@ -6,34 +6,37 @@ import 'package:provider_test/data/app_exceptions.dart';
 import 'package:provider_test/data/network/base_api_service.dart';
 
 class NetworkApiService extends BaseApiService {
-
   //get
   @override
   Future getRequest(String url) async {
     dynamic responseJson;
     try {
-      Response response = await get(Uri.parse(url)).timeout(Duration(seconds: 10));
+      Response response = await get(
+        Uri.parse(url),
+      ).timeout(Duration(seconds: 10));
       responseJson = returnJson(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
     return responseJson;
   }
-
 
   // post
   @override
   Future postRequest(String url, dynamic data) async {
     dynamic responseJson;
     try {
-      Response response = await post(Uri.parse(url),body: data).timeout(Duration(seconds: 10));
+      Response response = await post(
+        Uri.parse(url),
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(Duration(seconds: 10));
       responseJson = returnJson(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
     return responseJson;
   }
-
 
   dynamic returnJson(Response response) {
     switch (response.statusCode) {
