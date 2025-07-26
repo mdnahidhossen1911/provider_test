@@ -19,6 +19,7 @@ class AuthViewModel extends ChangeNotifier {
         .then((value) {
           isLoading = false;
           debugPrint(value.toString());
+          Utils.showToast(value['msg'].toString());
         })
         .onError((error, stackTrace) {
           isLoading = false;

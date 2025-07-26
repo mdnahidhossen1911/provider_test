@@ -65,6 +65,7 @@ class _LoginViewState extends State<LoginView> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email),
@@ -95,6 +96,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: _passwordController,
                         obscureText: value,
                         focusNode: _passwordFocusNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
                           labelText: 'Password',
                           prefixIcon: const Icon(Icons.lock_outline),
@@ -139,22 +141,10 @@ class _LoginViewState extends State<LoginView> {
                     title: 'Login',
                     loading: authViewModel.isLoading,
                     onPress: () {
-                      if (_emailController.text.isEmpty) {
-                        Utils.showFlushBar(context, 'Please enter your email');
-                      } else if (_passwordController.text.isEmpty) {
-                        Utils.showFlushBar(
-                          context,
-                          'Please enter your password',
-                        );
-                      } else if (_passwordController.text.length < 6) {
-                        Utils.showFlushBar(
-                          context,
-                          'Password must be at least 6 characters long',
-                        );
-                      } else {
+                      if (_formKey.currentState?.validate() ?? false) {
                         authViewModel.login(context, {
-                          "email": "admin@mail.com",
-                          "password": "123456",
+                          "email": _emailController.text.trim(),
+                          "password": _passwordController.text,
                         });
                       }
                     },
