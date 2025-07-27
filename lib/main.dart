@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_test/res/app_theme.dart';
+import 'package:provider_test/service_locator.dart';
 import 'package:provider_test/utils/routes/routes_name.dart';
+import 'package:provider_test/view_model/auth_view_model.dart';
 
 import 'utils/routes/routes.dart';
-import 'view_model/auth_view_model.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -15,40 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => AuthViewModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => getIt<AuthViewModel>()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: RoutesName.login,
-        theme: ThemeData(
-          colorSchemeSeed: Colors.blue,
-          inputDecorationTheme: InputDecorationTheme(
-            prefixIconColor: Colors.blue,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-            ),
-
-            labelStyle: const TextStyle(color: Colors.blue, fontSize: 16),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-            ),
-          ),
-        ),
+        theme: AppTheme.lightTheme,
         onGenerateRoute: Routes.onGenerateRoute,
       ),
     );

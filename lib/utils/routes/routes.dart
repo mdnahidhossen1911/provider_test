@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider_test/utils/routes/routes_name.dart';
 import 'package:provider_test/view/home_screen.dart';
 import 'package:provider_test/view/login_view.dart';
+import 'package:provider_test/view/sign_up_view.dart';
 
 class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings setting) {
@@ -10,6 +11,8 @@ class Routes {
     switch (setting.name) {
       case RoutesName.login:
         route = LoginView();
+      case RoutesName.signUp:
+        route = SignUpView();
       case RoutesName.home:
         route = HomeScreen();
       default:

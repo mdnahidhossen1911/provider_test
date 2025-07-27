@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_test/res/component/app_text_field.dart';
 import 'package:provider_test/res/component/round_button.dart';
 import 'package:provider_test/utils/utils.dart';
 
+import '../utils/routes/routes_name.dart';
 import '../view_model/auth_view_model.dart';
 
 class LoginView extends StatefulWidget {
@@ -62,14 +64,12 @@ class _LoginViewState extends State<LoginView> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 48),
-                  TextFormField(
+                  AppTextField(
                     controller: _emailController,
+                    labelText: 'Email',
+                    prefixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email),
-                    ),
                     focusNode: _emailFocusNode,
                     onFieldSubmitted: (_) {
                       Utils.fieldFocusChange(
@@ -92,23 +92,13 @@ class _LoginViewState extends State<LoginView> {
                   ValueListenableBuilder(
                     valueListenable: _obscurePassword,
                     builder: (context, value, child) {
-                      return TextFormField(
+                      return AppTextField(
                         controller: _passwordController,
+                        labelText: 'Password',
+                        prefixIcon: Icons.lock_outline,
                         obscureText: value,
-                        focusNode: _passwordFocusNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          prefixIcon: const Icon(Icons.lock_outline),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              value ? Icons.visibility_off : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              _obscurePassword.value = !_obscurePassword.value;
-                            },
-                          ),
-                        ),
+                        focusNode: _passwordFocusNode,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
@@ -118,6 +108,14 @@ class _LoginViewState extends State<LoginView> {
                           }
                           return null;
                         },
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            value ? Icons.visibility_off : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            _obscurePassword.value = !_obscurePassword.value;
+                          },
+                        ),
                       );
                     },
                   ),
@@ -156,12 +154,7 @@ class _LoginViewState extends State<LoginView> {
                       const Text("Don't have an account?"),
                       TextButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Navigate to Sign Up screen!'),
-                              backgroundColor: Colors.blue,
-                            ),
-                          );
+                          Navigator.pushNamed(context, RoutesName.signUp);
                         },
                         child: const Text(
                           'Sign Up',
